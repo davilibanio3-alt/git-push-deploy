@@ -1,15 +1,21 @@
 # Simple Automated CI/CD Pipeline for Git Projects
 
-This Git-Push-Deploy solution enables automatic delivery of updates within your Git application sources directly to the cloud. The package can be applied as an add-on to **Java**, **PHP**, **Ruby**, **Node.js**, **Python** and **Go** projects, run on top of [the certified stack templates](https://www.virtuozzo.com/application-platform-docs/software-stacks-versions/).
+This Git-Push-Deploy solution enables automatic delivery of updates within your Git application sources directly to the cloud. The package can be applied as an add-on to **Java**, **PHP**, **Ruby**, **Node.js**, **Python** and **Go** projects, run on top of [the certified stack templates](https://www.virtuozzo.com/application-management-docs/software-stacks-versions/).
 
 ![git-push-deploy-pipeline](images/git-push-deploy-pipeline.png)
 
 The workflow depends on the programming language used in your project:
 
-- *for Java-based projects*, the package initiates creation of separate environment with a [Maven build node](https://www.virtuozzo.com/application-platform-docs/java-vcs-deployment/), which will be responsible for interaction with remote Git repository, triggering your application builds and their deployment to application server
-- *for PHP/Ruby/Node.js/Python/Go apps*, the package sets up a pipeline for project deployment directly to the ROOT context on a web server (consider that Ruby app servers are displayed with a deployment mode instead of a context within dashboard, though the actual project location is the same) 
+- *for Java-based projects*, the package initiates creation of separate environment with a [Maven build node](https://www.virtuozzo.com/application-management-docs/java-vcs-deployment/), which will be responsible for interaction with remote Git repository, triggering your application builds and their deployment to application server
+- *for PHP/Ruby/Node.js/Python/Go apps*, the package sets up a pipeline for project deployment directly to the ROOT context on a web server (consider that Ruby app servers are displayed with a deployment mode instead of a context within dashboard, though the actual project location is the same)
 
-All related deployment operations are performed via [Application Platfom API](https://www.virtuozzo.com/application-platform-api-docs/). If a server runs multiple containers, all of them will be restarted sequentially (with a 30-second delay by default) during the update to eliminate possible application downtime. Beside that, a special [ZDT Deployment](https://www.virtuozzo.com/application-platform-docs/php-zero-downtime-deploy/) option is used for PHP applications, ensuring their constant availability even with a single application server node.
+> **Note:** The *Git-Push-Deploy* add-on only works with the default **ROOT** context on the application server. As a result, consider the following points before installation:
+> 
+> - If you have an already deployed application to the ROOT context, it will be overwritten by the package installation. To keep it, move your application to a custom context.
+> - The add-on supports push-trigger updates only for the application deployed to the ROOT context, so the managed deployment must remain in this context to ensure the proper operation of the package.
+> - Custom (non-ROOT) contexts and multiple contexts for the same repository are not supported.
+
+All related deployment operations are performed via [Application Platfom API](https://www.virtuozzo.com/application-management-api-docs/). If a server runs multiple containers, all of them will be restarted sequentially (with a 30-second delay by default) during the update to eliminate possible application downtime. Beside that, a special [ZDT Deployment](https://www.virtuozzo.com/application-management-docs/php-zero-downtime-deploy/) option is used for PHP applications, ensuring their constant availability even with a single application server node.
 
 
 ## Requirements
@@ -34,12 +40,12 @@ Before applying the package, please consider the following points:
 </project>
 ```
 
-[![Deploy to Cloud](images/deploy-to-cloud.png)](https://www.virtuozzo.com/install/?manifest=https://cdn.jsdelivr.net/gh/jelastic-jps/git-push-deploy@master/manifest.jps)
+[![Deploy to Cloud](images/deploy-to-cloud.png)](https://www.virtuozzo.com/install/?manifest=https://raw.githubusercontent.com/jelastic-jps/git-push-deploy/refs/heads/master/manifest.jps)
 
 
 ## How to Integrate Git-Push-Deploy Pipeline to PaaS Environment  
 
-To install the Git-Push-Deploy package, copy link to the **_manifest.jps_** file above and [import](https://www.virtuozzo.com/application-platform-docs/environment-import/) it to your application platform dashboard.
+To install the Git-Push-Deploy package, copy link to the **_manifest.jps_** file above and [import](https://www.virtuozzo.com/application-management-docs/environment-import/) it to your application platform dashboard.
 
 ![install git-push-deploy](images/install-git-push-deploy.png)
 
@@ -54,4 +60,4 @@ Within the opened installation window, specify the following data:
 
 Click **Install** and wait for the platform to configure CI/CD pipeline for your project. Once your application is deployed, all the further changes, committed to a source repository, will be automatically delivered to your environment.
 
-For more information on the package please refer to the article [Git-Push-Deploy to Containers](https://www.virtuozzo.com/application-platform-docs/git-push-deploy/). 
+For more information on the package please refer to the article [Git-Push-Deploy to Containers](https://www.virtuozzo.com/application-management-docs/git-push-deploy/). 
